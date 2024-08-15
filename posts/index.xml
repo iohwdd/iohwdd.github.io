@@ -1,7 +1,15 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>All Posts - iohw 博客</title>
-        <link>http://localhost:1313/posts/</link>
+        <link>https://iohwdd.github.io/posts/</link>
         <description>All Posts | iohw 博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 15 Aug 2024 17:18:25 &#43;0800</lastBuildDate><atom:link href="http://localhost:1313/posts/" rel="self" type="application/rss+xml" /></channel>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 15 Aug 2024 17:18:25 &#43;0800</lastBuildDate><atom:link href="https://iohwdd.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>First_post</title>
+    <link>https://iohwdd.github.io/first_post/</link>
+    <pubDate>Thu, 15 Aug 2024 17:18:25 &#43;0800</pubDate>
+    <author>xxxx</author>
+    <guid>https://iohwdd.github.io/first_post/</guid>
+    <description><![CDATA[Test ]]></description>
+</item>
+</channel>
 </rss>
