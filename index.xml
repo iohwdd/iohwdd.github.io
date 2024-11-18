@@ -14,5 +14,13 @@
     <guid>https://iohwdd.github.io/first_post/</guid>
     <description><![CDATA[Test ]]></description>
 </item>
+<item>
+    <title></title>
+    <link>https://iohwdd.github.io/redis/</link>
+    <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
+    <author>iohw</author>
+    <guid>https://iohwdd.github.io/redis/</guid>
+    <description><![CDATA[数据类型 String 底层实现：SDS，相比于c语言中的string有以下优点 可以保存除文本外的音视频图片信息。底层以二进制形式的数据保存至buf[]中]]></description>
+</item>
 </channel>
 </rss>
