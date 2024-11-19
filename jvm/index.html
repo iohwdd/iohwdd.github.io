@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title> - iohw 博客</title><meta name="Description" content="iohw 博客"><meta property="og:url" content="https://iohwdd.github.io/jvm/">
+  <meta property="og:site_name" content="iohw 博客">
+  <meta property="og:title" content="iohw 博客">
+  <meta property="og:description" content="内存区域 jdk1.8之后JVM的内存结构： 线程共享：堆[字符串常量池] 线程私有：程序计数器、虚拟机栈、本地方法栈 本地内存：元空间[运行时常量">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="og:image" content="https://iohwdd.github.io/logo.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://iohwdd.github.io/logo.png">
+  <meta name="twitter:title" content="iohw 博客">
+  <meta name="twitter:description" content="内存区域 jdk1.8之后JVM的内存结构： 线程共享：堆[字符串常量池] 线程私有：程序计数器、虚拟机栈、本地方法栈 本地内存：元空间[运行时常量">
+<meta name="application-name" content="我的网站">
+<meta name="apple-mobile-web-app-title" content="我的网站"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://iohwdd.github.io/jvm/" /><link rel="prev" href="https://iohwdd.github.io/redis/" /><link rel="next" href="https://iohwdd.github.io/first_post/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/iohwdd.github.io\/jvm\/"
+        },"genre": "posts","wordcount":  2812 ,
+        "url": "https:\/\/iohwdd.github.io\/jvm\/","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "iohw"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="iohw 博客"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="iohw 博客"></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX"></h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>iohw</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="0001-01-01">0001-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2812 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#内存区域">内存区域</a>
+      <ul>
+        <li><a href="#程序计数器">程序计数器</a></li>
+        <li><a href="#虚拟机栈">虚拟机栈</a></li>
+        <li><a href="#本地方法栈">本地方法栈</a></li>
+        <li><a href="#堆">堆</a></li>
+        <li><a href="#方法区">方法区</a></li>
+      </ul>
+    </li>
+    <li><a href="#类初始化和类加载">类初始化和类加载</a></li>
+    <li><a href="#垃圾回收">垃圾回收</a>
+      <ul>
+        <li><a href="#死亡对象判断方法">死亡对象判断方法</a></li>
+        <li><a href="#垃圾回收算法">垃圾回收算法</a></li>
+        <li><a href="#垃圾收集器">垃圾收集器</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="内存区域">内存区域</h2>
+<p>jdk1.8之后JVM的内存结构：</p>
+<p>线程共享：堆[字符串常量池]</p>
+<p>线程私有：程序计数器、虚拟机栈、本地方法栈</p>
+<p>本地内存：元空间[运行时常量池(各种字面量和符合引用的常量池表)]、直接内存</p>
+<h3 id="程序计数器">程序计数器</h3>
+<p>指示线程下一条执行的命令。与线程绑定同生共死</p>
+<p>作用：</p>
+<ol>
+<li>实现代码流程控制（分支、循环等）</li>
+<li>在线程切换恢复之后，能够定位到接下来要执行的代码位置</li>
+</ol>
+<h3 id="虚拟机栈">虚拟机栈</h3>
+<p>方法调用会形成一个栈帧，加入到虚拟机栈中，完成调用后出栈。</p>
+<p>栈帧：包含了局部变量表、操作数表、动态链接、方法返回链接</p>
+<p>局部变量表：存放编译期可知的各种<strong>数据类型</strong></p>
+<p>操作数栈：存放方法调用时产生的中间结果或临时变量</p>
+<p>动态链接：当一个方法需要调用另外一个方法时，需要将符合引用转化为内存地址的直接引用。这个过程就是动态链接</p>
+<p>可能出现的异常：</p>
+<p>OOM：容量太大，申请不到</p>
+<p>StackFlow：栈的深度太大（递归）</p>
+<h3 id="本地方法栈">本地方法栈</h3>
+<p>调用os中的方法所用到的栈</p>
+<h3 id="堆">堆</h3>
+<p>在jdk1.8之后，堆划分为新生代、老年代、元空间（1.7之前是永久代，被此替换）。堆空间是存放<strong>几乎</strong>所有对象实例的地方，对于某些方法中对象引用没有被返回或者没有被外部使用的（jdk1.7之后开启的逃逸分析），就直接在栈上分配内存。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119153904527.png"
+        data-srcset="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119153904527.png, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119153904527.png 1.5x, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119153904527.png 2x"
+        data-sizes="auto"
+        alt="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20241119153904527.png"
+        title="image-20241119153904527" /></p>
+<p>新生代对象在Eden中，在新生代进行一次垃圾回收后，还存活的对象晋升至s1或s0，并将年龄设置为1。当年龄达到15（可以自己设置<code>-XX:MaxTenuringThreshold</code> ，最大为15，因为对象头中只提供了4位标识年龄）时，晋升至老年代。</p>
+<p>补充最大年龄相关知识：</p>
+<p>当survivor区某个年龄的数量超过了50%（可以通过<code>-XX:TargetSurvivorRatio=percent</code> 设置）时，会将晋升年龄与这个年龄取一个最小值作为新的晋升年龄。</p>
+<p>可能出现的异常：</p>
+<p><strong><code>Java heap space</code></strong>：申请不到足够内存了</p>
+<p><strong><code>GC Overhead Limit Exceeded</code></strong>：垃圾回收后仍然没有足够的内存。也就是说大部分对象都无法被垃圾回收。</p>
+<h3 id="方法区">方法区</h3>
+<p>方法区是一个抽象概念，可以理解为一个接口，元空间是方法区的实现</p>
+<p>该空间，主要存放类的元信息，如类信息、字段信息、静态变量等。当调用方法时使用到的类没有被加载（也就是元空间没有），就会先进行类加载，然后存入到元空间中。也就是说，类加载是懒加载。</p>
+<p>元空间使用的是本地内存，默认没有使用上限</p>
+<p>可以通过<code>-XX:MetaspaceSize=N</code> 设置初始大小，<code>-XX:MaxMetaspaceSize=N</code> 设置最大大小</p>
+<h2 id="类初始化和类加载">类初始化和类加载</h2>
+<p><strong>创建对象的过程</strong></p>
+<ol>
+<li>
+<p>类加载检查（没有加载过就先加载类）</p>
+</li>
+<li>
+<p>在堆中分配空间，有两种方式</p>
+<ol>
+<li>指针碰撞
+适用情况：堆内存规整，没有碎片
+原理：用过的内存放一边，没用过的放在另外一边，中间有一个分界指针，只要想着没用过的内存方向将指针移动对象内存大小即可
+GC收集器：Serial, ParNew</li>
+<li>空闲列表
+适用情况：堆内存不规整，有碎片
+原理：虚拟机维护一个列表记录哪些内存可用。在分配时找一块足够大的内存块分配给对象实例
+GC收集器：CMS</li>
+</ol>
+<p>内存分配并发问题，基于下面两种保证线程安全：</p>
+<ul>
+<li>CAS+失败重试：CAS为乐观锁的一种实现，发生冲突就会重试</li>
+<li>TLAB：为<strong>每一个线程</strong>在Eden区分配一块内存，在线程中的对象创建时，先在TLAB创建，该区域用完时再采用上述的CAS进行内存分配</li>
+</ul>
+</li>
+<li>
+<p>初始化为0值</p>
+</li>
+<li>
+<p>设置对象头（标注哪个类的示例，用了什么锁等等）</p>
+</li>
+<li>
+<p>执行构造器</p>
+</li>
+</ol>
+<p><strong>对象的生命周期</strong></p>
+<ol>
+<li>创建：在堆中实例化</li>
+<li>使用：被引用执行相应操作</li>
+<li>销毁：不再被引用时，被垃圾回收，释放内存空间</li>
+</ol>
+<p><strong>对象的内存布局</strong></p>
+<p>对象头、实例数据、对齐填充</p>
+<p>对象头：</p>
+<ol>
+<li>标记字段：存储哈希码、GC年龄、锁标志等</li>
+<li>类型指针：指向类元数据的指针，虚拟机凭此确定是哪个类的实例</li>
+</ol>
+<p>实例数据：存放对象真正的有效信息，各种字段的内容</p>
+<p>对齐填充：仅仅起到一个内存对齐的作用。虚拟机要求对象的其实地址必须是8的整数倍</p>
+<p><strong>对象的访问定位</strong></p>
+<p>句柄</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162527018.png"
+        data-srcset="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162527018.png, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162527018.png 1.5x, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162527018.png 2x"
+        data-sizes="auto"
+        alt="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20241119162527018.png"
+        title="image-20241119162527018" /></p>
+<p>直接指针</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162603057.png"
+        data-srcset="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162603057.png, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162603057.png 1.5x, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162603057.png 2x"
+        data-sizes="auto"
+        alt="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20241119162603057.png"
+        title="image-20241119162603057" /></p>
+<p>句柄的好处是在类移到时，只需要改变句柄中的实例指针，而reference本身不需要改；直接指针好处就是速度快，节省一次指针定位的开销。</p>
+<p>类加载器</p>
+<p>自顶向下分：<strong>启动类加载器</strong>（加载java核心库） -&gt; <strong>扩展类加载器</strong> （加载扩展目录下的jar包和类库）-&gt;  <strong>应用程序类加载器</strong> （我们平时写的java程序）-&gt; <strong>用户自定义类加载器</strong></p>
+<p>双亲委派模型：当类加载器收到类加载请求时，不会立马自己开始加载，而是交给父类加载器加载，若父加载器反馈自己无法完成这个加载请求，子加载器才会尝试自己去加载。</p>
+<p>保证了类的唯一性，避免重复加载java类型</p>
+<p>类加载过程</p>
+<ol>
+<li>加载
+将二进制流转化成方法区运行时的数据结构，在内存中生成一个代表类的Class对象</li>
+<li>链接
+<ol>
+<li>验证
+验证class文件中字节流的信息是否符合当前虚拟机的要求</li>
+<li>准备
+给静态字段分配内存，并设置默认值</li>
+<li>解析
+将常量池中的符合引用替换为直接引用</li>
+</ol>
+</li>
+<li>初始化
+执行类的构造方法（编译器自动生成的）</li>
+</ol>
+<h2 id="垃圾回收">垃圾回收</h2>
+<h3 id="死亡对象判断方法">死亡对象判断方法</h3>
+<p><strong>引用计数法</strong></p>
+<p>给对象添加一个引用计数器，当有一个地方引用它计数器+1，当引用失效计数器-1。通过判断是否为0判断是否不再被引用。</p>
+<p>缺陷：循环依赖的类即使不被其它地方引用，也无法识别回收</p>
+<p><strong>可达性分析算法</strong></p>
+<p>以GC ROOTS的对象为起点，向下搜索引用链，不在引用链上的对象则是不可用的对象，需要被回收。</p>
+<p><strong>引用类型总结</strong></p>
+<p>强引用：不会被垃圾回收</p>
+<p>软引用：可有可无的对象。如果内存足够不会被回收，不够了就会回收</p>
+<p>弱引用：一旦发生垃圾回收，该引用类型的对象都会被回收</p>
+<p>虚引用：主要用来跟踪垃圾回收活动，必须与引用队列联合使用</p>
+<p><strong>判断一个类是无用的类</strong></p>
+<p>满足下面三个条件</p>
+<ol>
+<li>该类所有的实例都已经被垃圾回收</li>
+<li>该类的加载器已经被回收</li>
+<li>没有地方使用该类的Class，如进行反射</li>
+</ol>
+<h3 id="垃圾回收算法">垃圾回收算法</h3>
+<ol>
+<li>
+<p>标记-清除
+标记存活对象（可达对象），对未标记的对象进行清理。</p>
+<p>缺点：产生内存碎片，效率低</p>
+</li>
+<li>
+<p>标记-复制
+将内存分为大小相同的两块，当其中一块用完时，将其中存活的对象集中分配到另一块，然后再整个清理该内存块。
+缺点：内存缩小一半，如果存活对象量大，效率低</p>
+</li>
+<li>
+<p>标记-整理</p>
+</li>
+</ol>
+<p>​		将标记的对象整理在一块连续集中的空间（集中在一端），清理边		界外的内存</p>
+<h3 id="垃圾收集器">垃圾收集器</h3>
+<p>Serial</p>
+<p>单线程执行垃圾回收，并且会STW（用户线程暂停）</p>
+<p>ParNew</p>
+<p>serial的多线程版本，提高了效率</p>
+<p>Parallel Scavnenge</p>
+<p>类似ParNew，就是关注点在提高吞吐量（高效率利用CPU，尽可能少占用用户代码执行时间）</p>
+<p>CMS</p>
+<p>旨在尽可能减少停顿时间，是并发收集器（几乎与用户线程同时工作，没有STW），采用标记-清除算法。</p>
+<p>初始标记：标记直接与root相连的对象</p>
+<p>并发标记：跟在垃圾回收时，引用发生更新的地方</p>
+<p>重新标记：重新标记用户程序继续运行而导致标记产生变动的那一部分对象的标记记录</p>
+<p>并发清除：开启用户线程，同时GC线程开始清扫</p>
+<p>缺点：对CPU敏感，产生碎片</p>
+<p>G1</p>
+<p>采用标记-整理算法，低停顿时间，高吞吐量。</p>
+<p>可以让使用者明确在指定M毫秒的时间内，消耗在垃圾收集器上的时间不得超过N毫秒。</p>
+<ul>
+<li>初始标记</li>
+<li>并发标记</li>
+<li>最终标记</li>
+<li>筛选回收</li>
+</ul>
+<p>该收集器会在后台维护一个优先列表，每次根据收集时间，选择回收价值最大的Region，效率高。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 0001-01-01</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/jvm/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://iohwdd.github.io/jvm/" data-title=""><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://iohwdd.github.io/jvm/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://iohwdd.github.io/jvm/" data-title=""><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://iohwdd.github.io/jvm/" data-title=""><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://iohwdd.github.io/jvm/" data-title=""><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/redis/" class="prev" rel="prev" title=""><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i></a>
+            <a href="/first_post/" class="next" rel="next" title="First_post">First_post<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.132.2">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2024</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">iohw</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/contrib/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
