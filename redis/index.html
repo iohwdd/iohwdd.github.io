@@ -4,18 +4,20 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title> - iohw 博客</title><meta name="Description" content="iohw 博客"><meta property="og:url" content="https://iohwdd.github.io/redis/">
+        <title>Redis - iohw 博客</title><meta name="Description" content="iohw 博客"><meta property="og:url" content="https://iohwdd.github.io/redis/">
   <meta property="og:site_name" content="iohw 博客">
-  <meta property="og:title" content="iohw 博客">
+  <meta property="og:title" content="Redis">
   <meta property="og:description" content="数据类型 String 底层实现：SDS，相比于c语言中的string有以下优点 可以保存除文本外的音视频图片信息。底层以二进制形式的数据保存至buf[]中">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-19T17:18:25+08:00">
+    <meta property="article:modified_time" content="2024-11-19T17:18:25+08:00">
     <meta property="og:image" content="https://iohwdd.github.io/logo.png">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://iohwdd.github.io/logo.png">
-  <meta name="twitter:title" content="iohw 博客">
+  <meta name="twitter:title" content="Redis">
   <meta name="twitter:description" content="数据类型 String 底层实现：SDS，相比于c语言中的string有以下优点 可以保存除文本外的音视频图片信息。底层以二进制形式的数据保存至buf[]中">
 <meta name="application-name" content="我的网站">
 <meta name="apple-mobile-web-app-title" content="我的网站"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
@@ -26,13 +28,13 @@
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "",
+        "headline": "Redis",
         "inLanguage": "zh-CN",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/iohwdd.github.io\/redis\/"
         },"genre": "posts","wordcount":  3833 ,
-        "url": "https:\/\/iohwdd.github.io\/redis\/","publisher": {
+        "url": "https:\/\/iohwdd.github.io\/redis\/","datePublished": "2024-11-19T17:18:25+08:00","dateModified": "2024-11-19T17:18:25+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -103,9 +105,9 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX"></h1><div class="post-meta">
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Redis</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>iohw</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="0001-01-01">0001-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;3833 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-19">2024-11-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;3833 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;8 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="true">
                 <div class="details-summary toc-title">
@@ -114,23 +116,30 @@
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#aof日志">AOF日志</a></li>
-    <li><a href="#rdb快照">RDB快照</a></li>
-    <li><a href="#大key对持久化的影响">大key对持久化的影响</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#过期删除">过期删除</a></li>
-    <li><a href="#内存淘汰">内存淘汰</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#雪崩">雪崩</a></li>
-    <li><a href="#击穿">击穿</a></li>
-    <li><a href="#穿透">穿透</a></li>
+    <li><a href="#数据类型">数据类型</a></li>
+    <li><a href="#持久化">持久化</a>
+      <ul>
+        <li><a href="#aof日志">AOF日志</a></li>
+        <li><a href="#rdb快照">RDB快照</a></li>
+        <li><a href="#大key对持久化的影响">大key对持久化的影响</a></li>
+      </ul>
+    </li>
+    <li><a href="#过期删除于内存淘汰策略">过期删除于内存淘汰策略</a>
+      <ul>
+        <li><a href="#过期删除">过期删除</a></li>
+        <li><a href="#内存淘汰">内存淘汰</a></li>
+      </ul>
+    </li>
+    <li><a href="#缓存">缓存</a>
+      <ul>
+        <li><a href="#雪崩">雪崩</a></li>
+        <li><a href="#击穿">击穿</a></li>
+        <li><a href="#穿透">穿透</a></li>
+      </ul>
+    </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h1 id="数据类型">数据类型</h1>
+            </div><div class="content" id="content"><h2 id="数据类型">数据类型</h2>
 <p>String</p>
 <p>底层实现：SDS，相比于c语言中的string有以下优点</p>
 <ol>
@@ -221,8 +230,8 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <li>用户签到：月签到天数（一个用户一个bitmap）、七天连续签到（一天一个bitmap，多个bitmap进行&amp;操作）</li>
 <li>判断用户登录状态</li>
 </ol>
-<h1 id="持久化">持久化</h1>
-<h2 id="aof日志">AOF日志</h2>
+<h2 id="持久化">持久化</h2>
+<h3 id="aof日志">AOF日志</h3>
 <p>通过在客户端在redis中执行<strong>写命令</strong>之后，会将写命令追加到AOF日志文件，这样一来AOF日志文件保存了所有的写命令。系统异常造成数据丢失时，可通过执行AOF日志中的命令完成数据恢复。</p>
 <p>Q：为什么要在执行写命令之后再写入AOF？</p>
 <p>A：执行命令时会检查语法问题，避免写入时还要检查语法是否正确</p>
@@ -246,12 +255,12 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <p>子进程完成重写操作后，会向父进程发送信号，父进程接收到信号后，会执行信号处理函数，这个函数执行将AOF重写缓冲区的内容追加到新的AOF文件中，新的AOF文件更名覆盖旧的AOF文件，完成AOF后台重写。</p>
 <p><strong>AOF做持久化的缺点</strong></p>
 <p>因为redis执行命令由单线程执行，如果AOF文件很大，这个恢复的过程就会很慢</p>
-<h2 id="rdb快照">RDB快照</h2>
+<h3 id="rdb快照">RDB快照</h3>
 <p>以二进制文件的形式存储redis数据库某一时刻的数据快照。使用save和bgsave两个命令生成RDB文件，其中后者是创建子进程执行。每次在服务器启动时自动执行，也可以修改配置文件修改执行频次。该方式执行效率高于AOF日志。</p>
 <p>如果生成RDB快照时，数据被修改的话是无法更新至RDB快照中的，但是可以通过缓冲区追加到AOF日志文件中。</p>
 <p>RDB执行频率低会导致数据丢失多，频率高导致写入磁盘和创建子进程带来额外的开销。开启混合持久化功能（发送在AOF日志重写过程），<code>aof-use-rdb-preamble yes</code> ，在重写日志时，会以RBD方式写入到AOF文件中，再将重写缓冲区的<strong>增量命令</strong>追加到AOF文件中。写入完成后，会通知主线程新的还要RDB和AOF格式的AOF文件替换旧的AOF文件。</p>
 <p>如此前半部分是RDB格式的全量数据，后半部分是AOF格式的增量数据，使得数据更少丢失。</p>
-<h2 id="大key对持久化的影响">大key对持久化的影响</h2>
+<h3 id="大key对持久化的影响">大key对持久化的影响</h3>
 <p>对于AOF日志持久化：</p>
 <p>只会影响Alawyas写回策略，因为每执行一个写命令就向AOF日志（立刻执行fsync）追加命令。如果这个key很大，就会造成主线程阻塞。</p>
 <p>另外两种，EverySec是先将命令写入内核缓冲区，每个1s将缓冲区内容写回硬盘，是创建一个异步任务执行fsync；No永远不会执行fsync。</p>
@@ -259,8 +268,8 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <p>AOF重写与生成RDB快照都会通过fork（）创建一个子进程执行任务。在创建子进程的过程中，os会把操作系统的页表复制给子进程。如果页表很大，这个过程会很耗时，因此执行fork()时就会有阻塞的现象。</p>
 <p>在AOF重写过程中，主进程修改key-value时会发生写时复制，会把物理内存复制一份。由于大key占用物理内存大，这一过程也是比较耗时的。于是父进程就会阻塞</p>
 <p>定时检查大key，删除大key使用unlink，该命令是异步的</p>
-<h1 id="过期删除于内存淘汰策略">过期删除于内存淘汰策略</h1>
-<h2 id="过期删除">过期删除</h2>
+<h2 id="过期删除于内存淘汰策略">过期删除于内存淘汰策略</h2>
+<h3 id="过期删除">过期删除</h3>
 <p>redis在给一个键设置过期时间时，会向<strong>过期字典</strong>中加入键与过期时间。</p>
 <p>有以下三种删除策略：</p>
 <ol>
@@ -285,7 +294,7 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 缺点：难以确定操作执行时长和频率。太频繁，像定时删除；太少，像惰性删除</p>
 </li>
 </ol>
-<h2 id="内存淘汰">内存淘汰</h2>
+<h3 id="内存淘汰">内存淘汰</h3>
 <p>当redis中存储的数据量达到上限时，就会根据内存淘汰策略删除一些key。有下面这些淘汰策略：</p>
 <p><img
         class="lazyload"
@@ -295,8 +304,8 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
         data-sizes="auto"
         alt="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20241118214226046.png"
         title="image-20241118214226046" /></p>
-<h1 id="缓存">缓存</h1>
-<h2 id="雪崩">雪崩</h2>
+<h2 id="缓存">缓存</h2>
+<h3 id="雪崩">雪崩</h3>
 <p>原因：大量缓存几乎同时失效，导致大量请求访问数据库，把数据库整垮</p>
 <p>解决措施：</p>
 <ol>
@@ -304,14 +313,14 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <li>让缓存不失效，由后端主动更新缓存</li>
 <li>使用互斥锁，如果发现缓存不在redis里，加个互斥锁，保证同一时间只有一个请求构建缓存（从数据读，再更新到redis）</li>
 </ol>
-<h2 id="击穿">击穿</h2>
+<h3 id="击穿">击穿</h3>
 <p>原因：热点缓存失效，大量请求访问数据库，把数据库整垮。其实也可以看作雪崩的一种情况。</p>
 <p>解决措施：</p>
 <ol>
 <li>互斥锁</li>
 <li>不给热点数据设置过期时间，后台同步更新</li>
 </ol>
-<h2 id="穿透">穿透</h2>
+<h3 id="穿透">穿透</h3>
 <p>原因：缓存中没有，数据库中也没有，真是炸缸了，数据库整垮。</p>
 <p>解决措施：</p>
 <ol>
@@ -324,14 +333,14 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 0001-01-01</span>
+                <span>Updated on 2024-11-19</span>
             </div></div>
         <div class="post-info-line">
             <div class="post-info-md"><span>
                             <a class="link-to-markdown" href="/redis/index.md" target="_blank">Read Markdown</a>
                         </span></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://iohwdd.github.io/redis/" data-title=""><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://iohwdd.github.io/redis/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://iohwdd.github.io/redis/" data-title=""><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://iohwdd.github.io/redis/" data-title=""><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://iohwdd.github.io/redis/" data-title=""><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://iohwdd.github.io/redis/" data-title="Redis"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://iohwdd.github.io/redis/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://iohwdd.github.io/redis/" data-title="Redis"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://iohwdd.github.io/redis/" data-title="Redis"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://iohwdd.github.io/redis/" data-title="Redis"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -344,7 +353,7 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
     </div>
 
     <div class="post-nav">
-            <a href="/jvm/" class="next" rel="next" title=""><i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+            <a href="/jvm/" class="next" rel="next" title="JVM">JVM<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">

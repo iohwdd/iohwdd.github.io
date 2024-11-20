@@ -2,10 +2,10 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://iohwdd.github.io/first_post/</loc><lastmod>2024-08-15T17:18:25&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://iohwdd.github.io/</loc><lastmod>2024-08-15T17:18:25&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://iohwdd.github.io/posts/</loc><lastmod>2024-08-15T17:18:25&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://iohwdd.github.io/jvm/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
-            <loc>https://iohwdd.github.io/redis/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://iohwdd.github.io/</loc><lastmod>2024-11-19T22:02:00&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://iohwdd.github.io/mysql/</loc><lastmod>2024-11-19T22:02:00&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://iohwdd.github.io/posts/</loc><lastmod>2024-11-19T22:02:00&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://iohwdd.github.io/jvm/</loc><lastmod>2024-11-19T17:18:25&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://iohwdd.github.io/redis/</loc><lastmod>2024-11-19T17:18:25&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
             <loc>https://iohwdd.github.io/categories/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://iohwdd.github.io/tags/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url></urlset>
