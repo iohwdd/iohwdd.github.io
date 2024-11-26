@@ -11,8 +11,8 @@
   <meta property="og:locale" content="zh_CN">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2024-11-19T17:18:25+08:00">
-    <meta property="article:modified_time" content="2024-11-19T17:18:25+08:00">
+    <meta property="article:published_time" content="2024-11-26T17:18:25+08:00">
+    <meta property="article:modified_time" content="2024-11-26T17:18:25+08:00">
     <meta property="og:image" content="https://iohwdd.github.io/logo.png">
 
   <meta name="twitter:card" content="summary_large_image">
@@ -22,7 +22,7 @@
 <meta name="application-name" content="我的网站">
 <meta name="apple-mobile-web-app-title" content="我的网站"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://iohwdd.github.io/redis/" /><link rel="next" href="https://iohwdd.github.io/jvm/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://iohwdd.github.io/redis/" /><link rel="prev" href="https://iohwdd.github.io/mysql/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
@@ -33,8 +33,8 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/iohwdd.github.io\/redis\/"
-        },"genre": "posts","wordcount":  3833 ,
-        "url": "https:\/\/iohwdd.github.io\/redis\/","datePublished": "2024-11-19T17:18:25+08:00","dateModified": "2024-11-19T17:18:25+08:00","publisher": {
+        },"genre": "posts","wordcount":  5428 ,
+        "url": "https:\/\/iohwdd.github.io\/redis\/","datePublished": "2024-11-26T17:18:25+08:00","dateModified": "2024-11-26T17:18:25+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -107,8 +107,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Redis</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>iohw</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-19">2024-11-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;3833 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;8 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-26">2024-11-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;5428 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;11 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -116,30 +116,34 @@
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#数据类型">数据类型</a></li>
-    <li><a href="#持久化">持久化</a>
+    <li><a href="#aof日志">AOF日志</a></li>
+    <li><a href="#rdb快照">RDB快照</a></li>
+    <li><a href="#大key对持久化的影响">大key对持久化的影响</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#过期删除">过期删除</a></li>
+    <li><a href="#内存淘汰">内存淘汰</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#雪崩">雪崩</a></li>
+    <li><a href="#击穿">击穿</a></li>
+    <li><a href="#穿透">穿透</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#主从复制">主从复制</a>
       <ul>
-        <li><a href="#aof日志">AOF日志</a></li>
-        <li><a href="#rdb快照">RDB快照</a></li>
-        <li><a href="#大key对持久化的影响">大key对持久化的影响</a></li>
-      </ul>
-    </li>
-    <li><a href="#过期删除于内存淘汰策略">过期删除于内存淘汰策略</a>
-      <ul>
-        <li><a href="#过期删除">过期删除</a></li>
-        <li><a href="#内存淘汰">内存淘汰</a></li>
-      </ul>
-    </li>
-    <li><a href="#缓存">缓存</a>
-      <ul>
-        <li><a href="#雪崩">雪崩</a></li>
-        <li><a href="#击穿">击穿</a></li>
-        <li><a href="#穿透">穿透</a></li>
+        <li><a href="#第一次同步">第一次同步</a></li>
+        <li><a href="#命令传播">命令传播</a></li>
+        <li><a href="#分摊主服务器的压力">分摊主服务器的压力</a></li>
+        <li><a href="#增量复制">增量复制</a></li>
       </ul>
     </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h2 id="数据类型">数据类型</h2>
+            </div><div class="content" id="content"><h1 id="数据类型">数据类型</h1>
 <p>String</p>
 <p>底层实现：SDS，相比于c语言中的string有以下优点</p>
 <ol>
@@ -218,6 +222,25 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <p>ZRANGEBYLEX和 ZREVRANGEBYLEX实现，分数必须相同，设置为0即可。</p>
 </li>
 </ol>
+<p>跳表</p>
+<p>是一个有序链表，查询复杂度为logn。</p>
+<p>通过在原始链表上面增加索引，索引指向下下个元素，一级、二级索引以此类推。查询元素时先从最高层的索引开始查询，不在范围内就向下查询。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6e5a51e1a34443aebcd325b207a7ba80~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+        data-srcset="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6e5a51e1a34443aebcd325b207a7ba80~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp, https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6e5a51e1a34443aebcd325b207a7ba80~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp 1.5x, https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6e5a51e1a34443aebcd325b207a7ba80~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp 2x"
+        data-sizes="auto"
+        alt="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6e5a51e1a34443aebcd325b207a7ba80~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+        title="img" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a31e18024a774916a2efb72862e074a7~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+        data-srcset="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a31e18024a774916a2efb72862e074a7~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp, https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a31e18024a774916a2efb72862e074a7~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp 1.5x, https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a31e18024a774916a2efb72862e074a7~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp 2x"
+        data-sizes="auto"
+        alt="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a31e18024a774916a2efb72862e074a7~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+        title="img" /></p>
 <p>Geo</p>
 <p>底层实现：就是Zsort，只是将经纬度信息进行编码实现了到权重分数的转换</p>
 <p>应用场景：</p>
@@ -230,8 +253,8 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <li>用户签到：月签到天数（一个用户一个bitmap）、七天连续签到（一天一个bitmap，多个bitmap进行&amp;操作）</li>
 <li>判断用户登录状态</li>
 </ol>
-<h2 id="持久化">持久化</h2>
-<h3 id="aof日志">AOF日志</h3>
+<h1 id="持久化">持久化</h1>
+<h2 id="aof日志">AOF日志</h2>
 <p>通过在客户端在redis中执行<strong>写命令</strong>之后，会将写命令追加到AOF日志文件，这样一来AOF日志文件保存了所有的写命令。系统异常造成数据丢失时，可通过执行AOF日志中的命令完成数据恢复。</p>
 <p>Q：为什么要在执行写命令之后再写入AOF？</p>
 <p>A：执行命令时会检查语法问题，避免写入时还要检查语法是否正确</p>
@@ -255,12 +278,12 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <p>子进程完成重写操作后，会向父进程发送信号，父进程接收到信号后，会执行信号处理函数，这个函数执行将AOF重写缓冲区的内容追加到新的AOF文件中，新的AOF文件更名覆盖旧的AOF文件，完成AOF后台重写。</p>
 <p><strong>AOF做持久化的缺点</strong></p>
 <p>因为redis执行命令由单线程执行，如果AOF文件很大，这个恢复的过程就会很慢</p>
-<h3 id="rdb快照">RDB快照</h3>
+<h2 id="rdb快照">RDB快照</h2>
 <p>以二进制文件的形式存储redis数据库某一时刻的数据快照。使用save和bgsave两个命令生成RDB文件，其中后者是创建子进程执行。每次在服务器启动时自动执行，也可以修改配置文件修改执行频次。该方式执行效率高于AOF日志。</p>
 <p>如果生成RDB快照时，数据被修改的话是无法更新至RDB快照中的，但是可以通过缓冲区追加到AOF日志文件中。</p>
 <p>RDB执行频率低会导致数据丢失多，频率高导致写入磁盘和创建子进程带来额外的开销。开启混合持久化功能（发送在AOF日志重写过程），<code>aof-use-rdb-preamble yes</code> ，在重写日志时，会以RBD方式写入到AOF文件中，再将重写缓冲区的<strong>增量命令</strong>追加到AOF文件中。写入完成后，会通知主线程新的还要RDB和AOF格式的AOF文件替换旧的AOF文件。</p>
 <p>如此前半部分是RDB格式的全量数据，后半部分是AOF格式的增量数据，使得数据更少丢失。</p>
-<h3 id="大key对持久化的影响">大key对持久化的影响</h3>
+<h2 id="大key对持久化的影响">大key对持久化的影响</h2>
 <p>对于AOF日志持久化：</p>
 <p>只会影响Alawyas写回策略，因为每执行一个写命令就向AOF日志（立刻执行fsync）追加命令。如果这个key很大，就会造成主线程阻塞。</p>
 <p>另外两种，EverySec是先将命令写入内核缓冲区，每个1s将缓冲区内容写回硬盘，是创建一个异步任务执行fsync；No永远不会执行fsync。</p>
@@ -268,8 +291,8 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <p>AOF重写与生成RDB快照都会通过fork（）创建一个子进程执行任务。在创建子进程的过程中，os会把操作系统的页表复制给子进程。如果页表很大，这个过程会很耗时，因此执行fork()时就会有阻塞的现象。</p>
 <p>在AOF重写过程中，主进程修改key-value时会发生写时复制，会把物理内存复制一份。由于大key占用物理内存大，这一过程也是比较耗时的。于是父进程就会阻塞</p>
 <p>定时检查大key，删除大key使用unlink，该命令是异步的</p>
-<h2 id="过期删除于内存淘汰策略">过期删除于内存淘汰策略</h2>
-<h3 id="过期删除">过期删除</h3>
+<h1 id="过期删除于内存淘汰策略">过期删除于内存淘汰策略</h1>
+<h2 id="过期删除">过期删除</h2>
 <p>redis在给一个键设置过期时间时，会向<strong>过期字典</strong>中加入键与过期时间。</p>
 <p>有以下三种删除策略：</p>
 <ol>
@@ -294,7 +317,7 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 缺点：难以确定操作执行时长和频率。太频繁，像定时删除；太少，像惰性删除</p>
 </li>
 </ol>
-<h3 id="内存淘汰">内存淘汰</h3>
+<h2 id="内存淘汰">内存淘汰</h2>
 <p>当redis中存储的数据量达到上限时，就会根据内存淘汰策略删除一些key。有下面这些淘汰策略：</p>
 <p><img
         class="lazyload"
@@ -304,8 +327,8 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
         data-sizes="auto"
         alt="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20241118214226046.png"
         title="image-20241118214226046" /></p>
-<h2 id="缓存">缓存</h2>
-<h3 id="雪崩">雪崩</h3>
+<h1 id="缓存">缓存</h1>
+<h2 id="雪崩">雪崩</h2>
 <p>原因：大量缓存几乎同时失效，导致大量请求访问数据库，把数据库整垮</p>
 <p>解决措施：</p>
 <ol>
@@ -313,14 +336,14 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <li>让缓存不失效，由后端主动更新缓存</li>
 <li>使用互斥锁，如果发现缓存不在redis里，加个互斥锁，保证同一时间只有一个请求构建缓存（从数据读，再更新到redis）</li>
 </ol>
-<h3 id="击穿">击穿</h3>
+<h2 id="击穿">击穿</h2>
 <p>原因：热点缓存失效，大量请求访问数据库，把数据库整垮。其实也可以看作雪崩的一种情况。</p>
 <p>解决措施：</p>
 <ol>
 <li>互斥锁</li>
 <li>不给热点数据设置过期时间，后台同步更新</li>
 </ol>
-<h3 id="穿透">穿透</h3>
+<h2 id="穿透">穿透</h2>
 <p>原因：缓存中没有，数据库中也没有，真是炸缸了，数据库整垮。</p>
 <p>解决措施：</p>
 <ol>
@@ -329,11 +352,113 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <li>使用布隆过滤器判断数据是否存在于数据库中
 后台在向数据库添加数据时，会将该数据保存至布隆过滤器中。后续大量请求则只会访问redis和布隆过滤器而不会访问数据库</li>
 </ol>
+<h1 id="高可用">高可用</h1>
+<p>如果只有一个redis节点，若异常宕机了，虽然可用持久化机制恢复数据，但是恢复数据的这段过程中，redis是不可用的。而且，如果这台机器磁盘损坏，那将造成数据无法恢复的情况。为此，应当部署多个redis节点，保证数据安全性与redis的高可用性。</p>
+<h2 id="主从复制">主从复制</h2>
+<p>设置一主多从的节点模式，主节点复制数据的写入与同步数据给从节点，从节点复制数据的读取。</p>
+<p><code>replicaof &lt;目标服务器的IP&gt; &lt;目标服务器redis的端口&gt;</code> 让目标服务器作为主节点</p>
+<h3 id="第一次同步">第一次同步</h3>
+<ol>
+<li>
+<p>从节点与主节点建立连接</p>
+</li>
+<li>
+<p>主节点发送RDB文件给从节点
+从节点情况redis数据库内的数据，执行RDB文件</p>
+</li>
+<li>
+<p>在以下三个时间点，产生的写操作命令都为新写操作命令，会被加入replication buffer缓存区。</p>
+<ul>
+<li>主节点生成RDB文件的过程</li>
+<li>主节点发送RDB文件的过程</li>
+<li>从节点执行RDB文件的过程</li>
+</ul>
+</li>
+<li>
+<p>主节点将新写操作命令发送给从节点
+主节点将replication buffer缓存区中的新写操作命令发送给从节点，完成增量数据的同步。</p>
+</li>
+</ol>
+<h3 id="命令传播">命令传播</h3>
+<p>当主从节点完成<strong>第一次同步</strong>之后，双方会维护一个TCP连接，这个连接是长连接，目的是避免频繁的TCP连接与断开带来的性能开销。</p>
+<p>此后，主节点通过这个连接将写操作命令发送给从节点，然后从节点执行命令，达到主从数据一致。
+Redis 主节点每次收到写命令之后，先写到内部的缓冲区，然后<strong>异步</strong>发送给从节点。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.xiaolincoding.com//mysql/other/03eacec67cc58ff8d5819d0872ddd41e.png"
+        data-srcset="https://cdn.xiaolincoding.com//mysql/other/03eacec67cc58ff8d5819d0872ddd41e.png, https://cdn.xiaolincoding.com//mysql/other/03eacec67cc58ff8d5819d0872ddd41e.png 1.5x, https://cdn.xiaolincoding.com//mysql/other/03eacec67cc58ff8d5819d0872ddd41e.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.xiaolincoding.com//mysql/other/03eacec67cc58ff8d5819d0872ddd41e.png"
+        title="图片" /></p>
+<h3 id="分摊主服务器的压力">分摊主服务器的压力</h3>
+<p>背景：当一个主节点拥有很多从节点时，那么主节点会忙于使用fork()创建子进程，如果主节点的内存数据非常大，执行fork()函数时是会阻塞主节点的，从而使得redis无法正常处理请求。另外，传输RDB文件也会占用主节点的网络带宽，会对主节点响应命令请求产生影响。
+概括为以下两点：</p>
+<ol>
+<li>忙于执行fork()造成主节点阻塞</li>
+<li>占用主节点网络带宽</li>
+</ol>
+<p><strong>解决方案</strong></p>
+<p>让有从节点的从节点也做为“主节点”，它负责对它的从节点进行同步，主节点只要负责对一级从节点同步即可。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.xiaolincoding.com//mysql/other/4d850bfe8d712d3d67ff13e59b919452.png"
+        data-srcset="https://cdn.xiaolincoding.com//mysql/other/4d850bfe8d712d3d67ff13e59b919452.png, https://cdn.xiaolincoding.com//mysql/other/4d850bfe8d712d3d67ff13e59b919452.png 1.5x, https://cdn.xiaolincoding.com//mysql/other/4d850bfe8d712d3d67ff13e59b919452.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.xiaolincoding.com//mysql/other/4d850bfe8d712d3d67ff13e59b919452.png"
+        title="图片" /></p>
+<h3 id="增量复制">增量复制</h3>
+<p>背景：由于网络波动造成主从节点之间的TCP长连接端口，那么这个过程中主节点执行了新的写操作命令，而从节点无法同步的情况，造成从节点读取的还是旧数据。</p>
+<p><strong>redis如何解决的？</strong>
+当连接恢复时，从节点发送<code>pysnc {runId} {offset}</code>命令给主节点，由于不是第一次同步，此时<code>offset</code>不为-1，那么主节点会反馈<code>continue</code>命令告诉从节点接下来要采用增量复制的方式同步数据，然后将断线期间的增量数据发送给从节点。</p>
+<p>runId：是每个redis节点启动时生成的唯一标识</p>
+<p>offset：表示复制的进度
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.xiaolincoding.com//mysql/other/e081b470870daeb763062bb873a4477e.png"
+        data-srcset="https://cdn.xiaolincoding.com//mysql/other/e081b470870daeb763062bb873a4477e.png, https://cdn.xiaolincoding.com//mysql/other/e081b470870daeb763062bb873a4477e.png 1.5x, https://cdn.xiaolincoding.com//mysql/other/e081b470870daeb763062bb873a4477e.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.xiaolincoding.com//mysql/other/e081b470870daeb763062bb873a4477e.png"
+        title="图片" /></p>
+<p>首先要知道哪些是增量数据，通过以下两个东西实现：</p>
+<ol>
+<li>
+<p>repl_backlog_buffer：是一个<strong>环形缓存区</strong>当主节点通过命令传播发送给从节点时，同时也会存入到该缓存区内。</p>
+</li>
+<li>
+<p>replication offset：标记上面这个缓存区的同步进度。主节点使用<code>master_repl_offset </code> 来记录自己<strong>写</strong>到的位置，从节点使用<code> slave_repl_offset</code>来记录自己<strong>读</strong>到的位置。</p>
+</li>
+</ol>
+<p>示意图</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.xiaolincoding.com//mysql/other/2db4831516b9a8b79f833cf0593c1f12.png"
+        data-srcset="https://cdn.xiaolincoding.com//mysql/other/2db4831516b9a8b79f833cf0593c1f12.png, https://cdn.xiaolincoding.com//mysql/other/2db4831516b9a8b79f833cf0593c1f12.png 1.5x, https://cdn.xiaolincoding.com//mysql/other/2db4831516b9a8b79f833cf0593c1f12.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.xiaolincoding.com//mysql/other/2db4831516b9a8b79f833cf0593c1f12.png"
+        title="图片" /></p>
+<p>由于<code>repl_backlog_buffer</code> 是一个环形缓存区域，写满后会覆盖之前的数据。那么此时要保证数据的一致性的话就不得不采取**全量复制（将RDB文件传送给从节点）**了。</p>
+<p>如何判断环形缓存区域发生了数据的覆盖？</p>
+<p>如果从节点要读取的数据已经不在<code>repl_backlog_buffer</code> 缓存区内，则说明发送了数据的覆盖，应当采取全量复制进行数据同步。</p>
+<p>所以应当尽可能减少数据覆盖的可能性，就要增加<code>repl_backlog_buffer</code>缓冲区的大小。
+经验大小：</p>
+<p><code>second * write_size_per_second</code></p>
+<ul>
+<li>
+<p>second 为从服务器断线后重新连接上主服务器所需的平均 时间(以秒计算)。</p>
+</li>
+<li>
+<p>write_size_per_second 则是主服务器平均每秒产生的写命令数据量大小。</p>
+</li>
+</ul>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2024-11-19</span>
+                <span>Updated on 2024-11-26</span>
             </div></div>
         <div class="post-info-line">
             <div class="post-info-md"><span>
@@ -352,8 +477,7 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
         </section>
     </div>
 
-    <div class="post-nav">
-            <a href="/jvm/" class="next" rel="next" title="JVM">JVM<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+    <div class="post-nav"><a href="/mysql/" class="prev" rel="prev" title="Mysql"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Mysql</a></div>
 </div>
 </article></div>
             </main><footer class="footer">
