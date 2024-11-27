@@ -33,7 +33,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/iohwdd.github.io\/redis\/"
-        },"genre": "posts","wordcount":  5428 ,
+        },"genre": "posts","wordcount":  6519 ,
         "url": "https:\/\/iohwdd.github.io\/redis\/","datePublished": "2024-11-26T17:18:25+08:00","dateModified": "2024-11-26T17:18:25+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -107,8 +107,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Redis</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>iohw</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-26">2024-11-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;5428 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;11 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-26">2024-11-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;6519 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;14 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -139,6 +139,13 @@
         <li><a href="#命令传播">命令传播</a></li>
         <li><a href="#分摊主服务器的压力">分摊主服务器的压力</a></li>
         <li><a href="#增量复制">增量复制</a></li>
+      </ul>
+    </li>
+    <li><a href="#哨兵模式">哨兵模式</a>
+      <ul>
+        <li><a href="#为什么要有哨兵模式">为什么要有哨兵模式</a></li>
+        <li><a href="#如何判断主节点真的故障了">如何判断主节点真的故障了</a></li>
+        <li><a href="#由哪个哨兵进行主从故障转移">由哪个哨兵进行主从故障转移</a></li>
       </ul>
     </li>
   </ul>
@@ -447,13 +454,48 @@ Redis 主节点每次收到写命令之后，先写到内部的缓冲区，然�
 经验大小：</p>
 <p><code>second * write_size_per_second</code></p>
 <ul>
-<li>
-<p>second 为从服务器断线后重新连接上主服务器所需的平均 时间(以秒计算)。</p>
-</li>
-<li>
-<p>write_size_per_second 则是主服务器平均每秒产生的写命令数据量大小。</p>
-</li>
+<li>second 为从服务器断线后重新连接上主服务器所需的平均 时间(以秒计算)。</li>
+<li>write_size_per_second 则是主服务器平均每秒产生的写命令数据量大小。</li>
 </ul>
+<h2 id="哨兵模式">哨兵模式</h2>
+<h3 id="为什么要有哨兵模式">为什么要有哨兵模式</h3>
+<p>因不可抗因素主节点挂掉时，客户端对redis的使用就会出现异常，无法写入新的数据。那么此时，就要人工涉入，选一个从节点做为新的主节点，并通知客户端将其配置的主节点ip地址更新为<strong>新主节点</strong>的ip地址。显然，这很不智能。</p>
+<p>redis提供了哨兵模式，用于实现<strong>主从节点故障转移</strong>，它会监测主节点是否存活，如果挂了会选举一个从节点作为<strong>新主节点</strong>，并且将新主节点的信息通知给从节点和客户端。</p>
+<p>哨兵的三个核心功能：<strong>监控、选主、通知</strong></p>
+<h3 id="如何判断主节点真的故障了">如何判断主节点真的故障了</h3>
+<p>哨兵也是一个redis节点。</p>
+<p>哨兵节点通过每隔1s给主从节点发送ping命令，如果有节点未在规定时间内给出响应，哨兵会认为该节点<strong>主观下线</strong>。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.xiaolincoding.com//picgo/26f88373d8454682b9e0c1d4fd1611b4.png"
+        data-srcset="https://cdn.xiaolincoding.com//picgo/26f88373d8454682b9e0c1d4fd1611b4.png, https://cdn.xiaolincoding.com//picgo/26f88373d8454682b9e0c1d4fd1611b4.png 1.5x, https://cdn.xiaolincoding.com//picgo/26f88373d8454682b9e0c1d4fd1611b4.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.xiaolincoding.com//picgo/26f88373d8454682b9e0c1d4fd1611b4.png"
+        title="哨兵监控主从节点" /></p>
+<p>但是没在规定时间内给出响应，不能断定这个节点挂了。比如主节点可能由于系统压力比较大或者网络发生了阻塞，导致主节点未能在规定时间内相应哨兵节点的ping命令。所以，不能只由一个哨兵节点的判断就觉得主节点是否挂了，那么就需要一个哨兵集群，当一个哨兵认为主节点主观下线时，会通知剩余的哨兵，他们会根据自己与主节点的网络连接状况表示赞同与不赞同。当<strong>半数以上</strong>（quorum 设置具体几个，合理设置为<strong>哨兵数量+1/2</strong>）的节点都赞同主节点挂了，就会认为主节点<strong>客观下线</strong>。</p>
+<p>为保证不出现赞同/不赞同票数一致的情况，哨兵集群应对搭建<strong>奇数</strong>个节点。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.xiaolincoding.com//picgo/13e4361407ba46979e802eaa654dcf67.png"
+        data-srcset="https://cdn.xiaolincoding.com//picgo/13e4361407ba46979e802eaa654dcf67.png, https://cdn.xiaolincoding.com//picgo/13e4361407ba46979e802eaa654dcf67.png 1.5x, https://cdn.xiaolincoding.com//picgo/13e4361407ba46979e802eaa654dcf67.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.xiaolincoding.com//picgo/13e4361407ba46979e802eaa654dcf67.png"
+        title="img" /></p>
+<h3 id="由哪个哨兵进行主从故障转移">由哪个哨兵进行主从故障转移</h3>
+<p>哨兵之中需要选出一个<strong>leader</strong>来进行主从故障转移的操作。</p>
+<p>先认为主节点主观下线的哨兵是<strong>候选者</strong>，所谓候选者，就是想当leader的节点。</p>
+<p>候选者需要达到以下两个条件才能成为leader：</p>
+<ol>
+<li>得到投票的数量为哨兵数量的<strong>半数以上</strong></li>
+<li>拿到的票数大于等于哨兵配置文件中的quorum</li>
+</ol>
+<p>具体流程：</p>
+<p>哨兵A先发现主节点挂了，那么它就是候选者。随后会通知其它的哨兵，看看它们的意见。其它哨兵根据自己与主节点网络连接的情况来表示赞同或不赞同，当赞同数量达到quorum（通常设置为节点数量+1/2），则会认为主节点<strong>主观下线</strong>。然后，需要<strong>选举一个leader</strong>来进行主从故障转移。</p>
+<p>哨兵A首先会给自己一票（只有候选者能给自己投票），然后像其它哨兵发送<strong>投票请求</strong>，就是想让别的哨兵投票给自己。其它哨兵收到投票请求后，并且自己的投票次数还在，则会把自己的一票投给它。最终哨兵A拿到哨兵数量半数以上的票数，且这个票数也大于quorum，那么哨兵A会成为leader节点，准备进行主从故障转移操作。</p>
+<p>特殊情况：</p>
+<p>那如果同时有两个哨兵认为主节点挂了呢？此时两个哨兵都会先给自己投上一票，然后会向其它哨兵节点发送投票请求。此时就看别的哨兵先收到谁的投票请求就投票给谁，若哨兵投票次数没有了就得不到投票。</p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
