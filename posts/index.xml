@@ -18,7 +18,7 @@
     <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
     <author>iohw</author>
     <guid>https://iohwdd.github.io/mysql/</guid>
-    <description><![CDATA[title = &lsquo;Mysql&rsquo; date = 2024-11-19T22:02:00+08:00 draft = true +++ 索引 innodb存储数据： 以数据页的形式存储，数据页内拆分了若干组，组的引入是为了建立页目录，页目录记录的就是各个组的主]]></description>
+    <description><![CDATA[title = &lsquo;Mysql&rsquo; date = 2024-11-19T22:02:00+08:00 draft = true 索引 innodb存储数据： 以数据页的形式存储，数据页内拆分了若干组，组的引入是为了建立页目录，页目录记录的就是各个组的主键]]></description>
 </item>
 <item>
     <title></title>
@@ -26,7 +26,7 @@
     <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
     <author>iohw</author>
     <guid>https://iohwdd.github.io/redis/</guid>
-    <description><![CDATA[title = &lsquo;Redis&rsquo; date = 2024-11-26T17:18:25+08:00 draft = false +++ 数据类型 String 底层实现：SDS，相比于c语言中的string有以下优点 可以保存除文本外的音视频图片信息。底层以二进制形式的数]]></description>
+    <description><![CDATA[title = &lsquo;Redis&rsquo; date = 2024-11-26T17:18:25+08:00 draft = false 数据类型 String 底层实现：SDS，相比于c语言中的string有以下优点 可以保存除文本外的音视频图片信息。底层以二进制形式的数据]]></description>
 </item>
 </channel>
 </rss>
