@@ -4,37 +4,35 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>Redis - iohw 博客</title><meta name="Description" content="iohw 博客"><meta property="og:url" content="https://iohwdd.github.io/redis/">
+        <title> - iohw 博客</title><meta name="Description" content="iohw 博客"><meta property="og:url" content="https://iohwdd.github.io/redis/">
   <meta property="og:site_name" content="iohw 博客">
-  <meta property="og:title" content="Redis">
-  <meta property="og:description" content="数据类型 String 底层实现：SDS，相比于c语言中的string有以下优点 可以保存除文本外的音视频图片信息。底层以二进制形式的数据保存至buf[]中">
+  <meta property="og:title" content="iohw 博客">
+  <meta property="og:description" content="title = ‘Redis’ date = 2024-11-26T17:18:25&#43;08:00 draft = false &#43;&#43;&#43; 数据类型 String 底层实现：SDS，相比于c语言中的string有以下优点 可以保存除文本外的音视频图片信息。底层以二进制形式的数">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2024-11-26T17:18:25+08:00">
-    <meta property="article:modified_time" content="2024-11-26T17:18:25+08:00">
     <meta property="og:image" content="https://iohwdd.github.io/logo.png">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://iohwdd.github.io/logo.png">
-  <meta name="twitter:title" content="Redis">
-  <meta name="twitter:description" content="数据类型 String 底层实现：SDS，相比于c语言中的string有以下优点 可以保存除文本外的音视频图片信息。底层以二进制形式的数据保存至buf[]中">
+  <meta name="twitter:title" content="iohw 博客">
+  <meta name="twitter:description" content="title = ‘Redis’ date = 2024-11-26T17:18:25&#43;08:00 draft = false &#43;&#43;&#43; 数据类型 String 底层实现：SDS，相比于c语言中的string有以下优点 可以保存除文本外的音视频图片信息。底层以二进制形式的数">
 <meta name="application-name" content="我的网站">
 <meta name="apple-mobile-web-app-title" content="我的网站"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://iohwdd.github.io/redis/" /><link rel="prev" href="https://iohwdd.github.io/mysql/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://iohwdd.github.io/redis/" /><link rel="next" href="https://iohwdd.github.io/mysql/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="/lib/fontawesome-free/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" href="/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "Redis",
+        "headline": "",
         "inLanguage": "zh-CN",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/iohwdd.github.io\/redis\/"
-        },"genre": "posts","wordcount":  6519 ,
-        "url": "https:\/\/iohwdd.github.io\/redis\/","datePublished": "2024-11-26T17:18:25+08:00","dateModified": "2024-11-26T17:18:25+08:00","publisher": {
+        },"genre": "posts","wordcount":  7582 ,
+        "url": "https:\/\/iohwdd.github.io\/redis\/","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -105,10 +103,10 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Redis</h1><div class="post-meta">
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX"></h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>iohw</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-26">2024-11-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;6519 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;14 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="0001-01-01">0001-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;7582 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;16 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -146,11 +144,18 @@
         <li><a href="#为什么要有哨兵模式">为什么要有哨兵模式</a></li>
         <li><a href="#如何判断主节点真的故障了">如何判断主节点真的故障了</a></li>
         <li><a href="#由哪个哨兵进行主从故障转移">由哪个哨兵进行主从故障转移</a></li>
+        <li><a href="#主从故障转移过程">主从故障转移过程</a></li>
+        <li><a href="#哨兵集群如何组成">哨兵集群如何组成</a></li>
       </ul>
     </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h1 id="数据类型">数据类型</h1>
+            </div><div class="content" id="content"><hr>
+<p>title = &lsquo;Redis&rsquo;
+date = 2024-11-26T17:18:25+08:00
+draft = false</p>
+<p>+++</p>
+<h1 id="数据类型">数据类型</h1>
 <p>String</p>
 <p>底层实现：SDS，相比于c语言中的string有以下优点</p>
 <ol>
@@ -367,11 +372,12 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 <h3 id="第一次同步">第一次同步</h3>
 <ol>
 <li>
-<p>从节点与主节点建立连接</p>
+<p>从节点与主节点建立连接
+发送<code>psync ? -1</code> 给主节点。<code>?</code> 表示主节点的<code>runId</code>,<code>-1</code>表示<code>offset</code> 复制进度。由于是第一次同步，所以都是未知数。不过主节点收到该命令后,会用<code>fullresync {runId} {offset}</code> 返回给从节点，告知其runId和offset</p>
 </li>
 <li>
-<p>主节点发送RDB文件给从节点
-从节点情况redis数据库内的数据，执行RDB文件</p>
+<p>主节点发送RDB文件给从节点（全量复制）
+从节点先清除redis数据库内的数据，再执行RDB文件</p>
 </li>
 <li>
 <p>在以下三个时间点，产生的写操作命令都为新写操作命令，会被加入replication buffer缓存区。</p>
@@ -382,14 +388,14 @@ set 命令有个参数 NX 可以实现key值不存在时成功插入，存在时
 </ul>
 </li>
 <li>
-<p>主节点将新写操作命令发送给从节点
+<p>主节点将新写操作命令发送给从节点（增量复制）
 主节点将replication buffer缓存区中的新写操作命令发送给从节点，完成增量数据的同步。</p>
 </li>
 </ol>
 <h3 id="命令传播">命令传播</h3>
 <p>当主从节点完成<strong>第一次同步</strong>之后，双方会维护一个TCP连接，这个连接是长连接，目的是避免频繁的TCP连接与断开带来的性能开销。</p>
-<p>此后，主节点通过这个连接将写操作命令发送给从节点，然后从节点执行命令，达到主从数据一致。
-Redis 主节点每次收到写命令之后，先写到内部的缓冲区，然后<strong>异步</strong>发送给从节点。</p>
+<p>此后，主节点通过这个连接将新的写操作命令发送给从节点，然后从节点执行命令，达到主从数据一致。
+Redis 主节点每次收到写命令之后，先写到内部的缓冲区（replication buffer），然后<strong>异步</strong>发送给从节点。</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -454,8 +460,12 @@ Redis 主节点每次收到写命令之后，先写到内部的缓冲区，然�
 经验大小：</p>
 <p><code>second * write_size_per_second</code></p>
 <ul>
-<li>second 为从服务器断线后重新连接上主服务器所需的平均 时间(以秒计算)。</li>
-<li>write_size_per_second 则是主服务器平均每秒产生的写命令数据量大小。</li>
+<li>
+<p>second 为从服务器断线后重新连接上主服务器所需的平均 时间(以秒计算)。</p>
+</li>
+<li>
+<p>write_size_per_second 则是主服务器平均每秒产生的写命令数据量大小。</p>
+</li>
 </ul>
 <h2 id="哨兵模式">哨兵模式</h2>
 <h3 id="为什么要有哨兵模式">为什么要有哨兵模式</h3>
@@ -493,21 +503,75 @@ Redis 主节点每次收到写命令之后，先写到内部的缓冲区，然�
 </ol>
 <p>具体流程：</p>
 <p>哨兵A先发现主节点挂了，那么它就是候选者。随后会通知其它的哨兵，看看它们的意见。其它哨兵根据自己与主节点网络连接的情况来表示赞同或不赞同，当赞同数量达到quorum（通常设置为节点数量+1/2），则会认为主节点<strong>主观下线</strong>。然后，需要<strong>选举一个leader</strong>来进行主从故障转移。</p>
-<p>哨兵A首先会给自己一票（只有候选者能给自己投票），然后像其它哨兵发送<strong>投票请求</strong>，就是想让别的哨兵投票给自己。其它哨兵收到投票请求后，并且自己的投票次数还在，则会把自己的一票投给它。最终哨兵A拿到哨兵数量半数以上的票数，且这个票数也大于quorum，那么哨兵A会成为leader节点，准备进行主从故障转移操作。</p>
+<p>哨兵A首先会给自己一票（只有候选者能给自己投票），然后像其它哨兵发送<strong>投票请求</strong>，就是想让别的哨兵投票给自己。其它哨兵收到投票请求后，并且自己的投票次数还在，则会把自己的一票投给它。最终若哨兵A拿到哨兵数量半数以上的票数，且这个票数也大于quorum，那么哨兵A会成为leader节点，准备进行主从故障转移操作。</p>
 <p>特殊情况：</p>
-<p>那如果同时有两个哨兵认为主节点挂了呢？此时两个哨兵都会先给自己投上一票，然后会向其它哨兵节点发送投票请求。此时就看别的哨兵先收到谁的投票请求就投票给谁，若哨兵投票次数没有了就得不到投票。</p>
+<p>那如果同时有两个哨兵认为主节点挂了呢？此时两个哨兵都会先给自己投上一票，然后会向其它哨兵节点发送投票请求。此时就看别的哨兵<strong>先收到谁的投票请求就投票给谁</strong>，若哨兵投票次数没有了就得不到投票。</p>
+<h3 id="主从故障转移过程">主从故障转移过程</h3>
+<p><strong>步骤一</strong></p>
+<p>选出一个新的主节点。</p>
+<p>首先要过滤掉一些下线以及历史网络状况问题出现多的从节点，避免它们成为新主节点时由于网络问题挂了又要选新主节点。redis配置文件中会记录网络延迟大于一定次数的节点，这些节点会被认为不适合当主节点</p>
+<p>选主节点决策三大点： 优先级 &gt; 复制进度 &gt; id号小的从节点胜出</p>
+<p>在第一轮比较优先级时就可以选出主节点，若有不止一个优先级相同的主节点则会进行下一轮的比较，以此类推。</p>
+<p>下面说明各个点表示的具体含义：</p>
+<ul>
+<li>优先级
+<code> slave-priority</code> 可以自主配置。可以根据哪台机器内存大速度快就设置其优先级高，在将来发生主从故障转移时，优先选择作为新主节点</li>
+<li>复制进度
+就是比较在<strong>环形缓存区</strong>中从节点的要读位置，离主节点要写的位置越近，说明复制最完全。复制程度高的当新主节点</li>
+</ul>
+<p><strong>步骤二</strong></p>
+<p>让从节点认新的主节点。也就是修改复制目标。</p>
+<p>哨兵向从节点发送<code>SLAVEOF</code>命令实现让从节点认新的主节点</p>
+<p><strong>步骤三</strong></p>
+<p>通知客户端主节点ip发生了变化，需要重新配置</p>
+<p>通过redis的发布者/订阅者机制实现。每个哨兵提供发布者/订阅者机制，客户端可以从哨兵订阅消息。</p>
+<p>哨兵提供的消息订阅频道有很多，不同频道包含了主从节点中不同的关键事件，几个常见的如下：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.xiaolincoding.com/gh/xiaolincoder/redis/%E5%93%A8%E5%85%B5/%E5%93%A8%E5%85%B5%E9%A2%91%E9%81%93.webp"
+        data-srcset="https://cdn.xiaolincoding.com/gh/xiaolincoder/redis/%E5%93%A8%E5%85%B5/%E5%93%A8%E5%85%B5%E9%A2%91%E9%81%93.webp, https://cdn.xiaolincoding.com/gh/xiaolincoder/redis/%E5%93%A8%E5%85%B5/%E5%93%A8%E5%85%B5%E9%A2%91%E9%81%93.webp 1.5x, https://cdn.xiaolincoding.com/gh/xiaolincoder/redis/%E5%93%A8%E5%85%B5/%E5%93%A8%E5%85%B5%E9%A2%91%E9%81%93.webp 2x"
+        data-sizes="auto"
+        alt="https://cdn.xiaolincoding.com/gh/xiaolincoder/redis/%E5%93%A8%E5%85%B5/%E5%93%A8%E5%85%B5%E9%A2%91%E9%81%93.webp"
+        title="img" /></p>
+<p>主从节点完成切换后，哨兵就会向**<code>+switch-master</code>**频道发布新主节点的ip和端口的消息，这个时候客户端可以收到这条消息，重新配置新主节点的ip和端口。</p>
+<p><strong>步骤四</strong></p>
+<p>旧主节点挂了之后，哨兵集群仍然会一直监控主节点的状态。当旧主节点恢复时，需要将其设置成从节点，认新主节点。</p>
+<p>当旧主节点恢复时，哨兵集群发送<code>SLAVEOF</code>命令完成旧主节点认新主节点的过程</p>
+<h3 id="哨兵集群如何组成">哨兵集群如何组成</h3>
+<p>也是通过redis的发布者/订阅者机制。</p>
+<p>对于哨兵的配置，只需要<code>sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</code> 一行即可。</p>
+<p>配置完后，哨兵会订阅主节点上的<code>__sentinel__</code>频道，各个哨兵会把自己的ip地址和端口发送到该频道中，其它哨兵可以从频道中读取消息发现其它的哨兵。这样一来哨兵集群就形成了。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.xiaolincoding.com//picgo/a6286053c6884cf58bf397d01674fe80.png"
+        data-srcset="https://cdn.xiaolincoding.com//picgo/a6286053c6884cf58bf397d01674fe80.png, https://cdn.xiaolincoding.com//picgo/a6286053c6884cf58bf397d01674fe80.png 1.5x, https://cdn.xiaolincoding.com//picgo/a6286053c6884cf58bf397d01674fe80.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.xiaolincoding.com//picgo/a6286053c6884cf58bf397d01674fe80.png"
+        title="img" /></p>
+<p>那对从节点怎么监控呢？</p>
+<p>哨兵通过以10s一次频率像主节点发送info命令，主节点会返回从节点列表。接着哨兵就可以根据从节点列表中的连接信息与每个从节点建立连接，并在这个连接上进行持续的监控。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://cdn.xiaolincoding.com//picgo/fdd5f695bb3643258662886f9fba0aab.png"
+        data-srcset="https://cdn.xiaolincoding.com//picgo/fdd5f695bb3643258662886f9fba0aab.png, https://cdn.xiaolincoding.com//picgo/fdd5f695bb3643258662886f9fba0aab.png 1.5x, https://cdn.xiaolincoding.com//picgo/fdd5f695bb3643258662886f9fba0aab.png 2x"
+        data-sizes="auto"
+        alt="https://cdn.xiaolincoding.com//picgo/fdd5f695bb3643258662886f9fba0aab.png"
+        title="img" /></p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2024-11-26</span>
+                <span>Updated on 0001-01-01</span>
             </div></div>
         <div class="post-info-line">
             <div class="post-info-md"><span>
                             <a class="link-to-markdown" href="/redis/index.md" target="_blank">Read Markdown</a>
                         </span></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://iohwdd.github.io/redis/" data-title="Redis"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://iohwdd.github.io/redis/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://iohwdd.github.io/redis/" data-title="Redis"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://iohwdd.github.io/redis/" data-title="Redis"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://iohwdd.github.io/redis/" data-title="Redis"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://iohwdd.github.io/redis/" data-title=""><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://iohwdd.github.io/redis/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://iohwdd.github.io/redis/" data-title=""><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://iohwdd.github.io/redis/" data-title=""><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://iohwdd.github.io/redis/" data-title=""><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -519,7 +583,8 @@ Redis 主节点每次收到写命令之后，先写到内部的缓冲区，然�
         </section>
     </div>
 
-    <div class="post-nav"><a href="/mysql/" class="prev" rel="prev" title="Mysql"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Mysql</a></div>
+    <div class="post-nav">
+            <a href="/mysql/" class="next" rel="next" title=""><i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">
