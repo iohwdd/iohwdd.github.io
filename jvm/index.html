@@ -33,7 +33,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/iohwdd.github.io\/jvm\/"
-        },"genre": "posts","wordcount":  2812 ,
+        },"genre": "posts","wordcount":  3437 ,
         "url": "https:\/\/iohwdd.github.io\/jvm\/","datePublished": "2024-11-19T17:18:25+08:00","dateModified": "2024-11-19T17:18:25+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -107,8 +107,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">JVM</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>iohw</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-19">2024-11-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2812 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-19">2024-11-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;3437 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;7 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -152,7 +152,7 @@
 <p>栈帧：包含了局部变量表、操作数表、动态链接、方法返回链接</p>
 <p>局部变量表：存放编译期可知的各种<strong>数据类型</strong></p>
 <p>操作数栈：存放方法调用时产生的中间结果或临时变量</p>
-<p>动态链接：当一个方法需要调用另外一个方法时，需要将符合引用转化为内存地址的直接引用。这个过程就是动态链接</p>
+<p>动态链接：当一个方法需要调用另外一个方法时，需要将符号引用转化为内存地址的直接引用。这个过程就是动态链接</p>
 <p>可能出现的异常：</p>
 <p>OOM：容量太大，申请不到</p>
 <p>StackFlow：栈的深度太大（递归）</p>
@@ -163,10 +163,10 @@
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119153904527.png"
-        data-srcset="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119153904527.png, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119153904527.png 1.5x, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119153904527.png 2x"
+        data-src="https://www.helloimg.com/i/2024/11/20/673dbbb11b3fc.png"
+        data-srcset="https://www.helloimg.com/i/2024/11/20/673dbbb11b3fc.png, https://www.helloimg.com/i/2024/11/20/673dbbb11b3fc.png 1.5x, https://www.helloimg.com/i/2024/11/20/673dbbb11b3fc.png 2x"
         data-sizes="auto"
-        alt="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20241119153904527.png"
+        alt="https://www.helloimg.com/i/2024/11/20/673dbbb11b3fc.png"
         title="image-20241119153904527" /></p>
 <p>新生代对象在Eden中，在新生代进行一次垃圾回收后，还存活的对象晋升至s1或s0，并将年龄设置为1。当年龄达到15（可以自己设置<code>-XX:MaxTenuringThreshold</code> ，最大为15，因为对象头中只提供了4位标识年龄）时，晋升至老年代。</p>
 <p>补充最大年龄相关知识：</p>
@@ -179,7 +179,29 @@
 <p>该空间，主要存放类的元信息，如类信息、字段信息、静态变量等。当调用方法时使用到的类没有被加载（也就是元空间没有），就会先进行类加载，然后存入到元空间中。也就是说，类加载是懒加载。</p>
 <p>元空间使用的是本地内存，默认没有使用上限</p>
 <p>可以通过<code>-XX:MetaspaceSize=N</code> 设置初始大小，<code>-XX:MaxMetaspaceSize=N</code> 设置最大大小</p>
+<p>Q：基础类型在 jvm 中的存储
+A： 1.存在虚拟机栈中方法栈帧的局部变量表中
+2.存在堆里的实例对象的成语变量里
+3.存在元空间（类静态变量）
+4.运行时常量池（由 final 修饰）</p>
 <h2 id="类初始化和类加载">类初始化和类加载</h2>
+<p><strong>类加载过程</strong></p>
+<ol>
+<li>加载
+将二进制流转化成方法区【元空间】运行时的数据结构，在内存中生成一个代表类的Class对象</li>
+<li>链接
+<ol>
+<li>验证
+验证class文件中字节流的信息是否符合当前虚拟机的要求</li>
+<li>准备
+给静态字段分配内存，并设置默认值</li>
+<li>解析
+将常量池中的符合引用替换为直接引用</li>
+</ol>
+</li>
+<li>初始化
+执行类的初始化方法（编译器自动生成的）</li>
+</ol>
 <p><strong>创建对象的过程</strong></p>
 <ol>
 <li>
@@ -190,7 +212,7 @@
 <ol>
 <li>指针碰撞
 适用情况：堆内存规整，没有碎片
-原理：用过的内存放一边，没用过的放在另外一边，中间有一个分界指针，只要想着没用过的内存方向将指针移动对象内存大小即可
+原理：用过的内存放一边，没用过的放在另外一边，中间有一个分界指针，只要向着没用过的内存方向将指针移动对象内存大小即可
 GC收集器：Serial, ParNew</li>
 <li>空闲列表
 适用情况：堆内存不规整，有碎片
@@ -207,7 +229,8 @@ GC收集器：CMS</li>
 <p>初始化为0值</p>
 </li>
 <li>
-<p>设置对象头（标注哪个类的示例，用了什么锁等等）</p>
+<p>设置对象头（标注哪个类的示例，用了什么锁等等）
+类型指针、对象运行时数据，如hashcode、分代年龄、锁状态等信息</p>
 </li>
 <li>
 <p>执行构造器</p>
@@ -233,42 +256,25 @@ GC收集器：CMS</li>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162527018.png"
-        data-srcset="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162527018.png, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162527018.png 1.5x, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162527018.png 2x"
+        data-src="https://www.helloimg.com/i/2024/11/20/673dbbe75e63c.png"
+        data-srcset="https://www.helloimg.com/i/2024/11/20/673dbbe75e63c.png, https://www.helloimg.com/i/2024/11/20/673dbbe75e63c.png 1.5x, https://www.helloimg.com/i/2024/11/20/673dbbe75e63c.png 2x"
         data-sizes="auto"
-        alt="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20241119162527018.png"
+        alt="https://www.helloimg.com/i/2024/11/20/673dbbe75e63c.png"
         title="image-20241119162527018" /></p>
 <p>直接指针</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162603057.png"
-        data-srcset="C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162603057.png, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162603057.png 1.5x, C:%5cUsers%5cAdministrator%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20241119162603057.png 2x"
+        data-src="https://www.helloimg.com/i/2024/11/20/673dbc054ca1d.png"
+        data-srcset="https://www.helloimg.com/i/2024/11/20/673dbc054ca1d.png, https://www.helloimg.com/i/2024/11/20/673dbc054ca1d.png 1.5x, https://www.helloimg.com/i/2024/11/20/673dbc054ca1d.png 2x"
         data-sizes="auto"
-        alt="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20241119162603057.png"
+        alt="https://www.helloimg.com/i/2024/11/20/673dbc054ca1d.png"
         title="image-20241119162603057" /></p>
 <p>句柄的好处是在类移到时，只需要改变句柄中的实例指针，而reference本身不需要改；直接指针好处就是速度快，节省一次指针定位的开销。</p>
 <p>类加载器</p>
 <p>自顶向下分：<strong>启动类加载器</strong>（加载java核心库） -&gt; <strong>扩展类加载器</strong> （加载扩展目录下的jar包和类库）-&gt;  <strong>应用程序类加载器</strong> （我们平时写的java程序）-&gt; <strong>用户自定义类加载器</strong></p>
 <p>双亲委派模型：当类加载器收到类加载请求时，不会立马自己开始加载，而是交给父类加载器加载，若父加载器反馈自己无法完成这个加载请求，子加载器才会尝试自己去加载。</p>
 <p>保证了类的唯一性，避免重复加载java类型</p>
-<p>类加载过程</p>
-<ol>
-<li>加载
-将二进制流转化成方法区运行时的数据结构，在内存中生成一个代表类的Class对象</li>
-<li>链接
-<ol>
-<li>验证
-验证class文件中字节流的信息是否符合当前虚拟机的要求</li>
-<li>准备
-给静态字段分配内存，并设置默认值</li>
-<li>解析
-将常量池中的符合引用替换为直接引用</li>
-</ol>
-</li>
-<li>初始化
-执行类的构造方法（编译器自动生成的）</li>
-</ol>
 <h2 id="垃圾回收">垃圾回收</h2>
 <h3 id="死亡对象判断方法">死亡对象判断方法</h3>
 <p><strong>引用计数法</strong></p>
@@ -304,7 +310,7 @@ GC收集器：CMS</li>
 <p>标记-整理</p>
 </li>
 </ol>
-<p>​		将标记的对象整理在一块连续集中的空间（集中在一端），清理边		界外的内存</p>
+<p>​		将标记的对象整理在一块连续集中的空间（集中在一端），然后清理边界外的内存</p>
 <h3 id="垃圾收集器">垃圾收集器</h3>
 <p>Serial</p>
 <p>单线程执行垃圾回收，并且会STW（用户线程暂停）</p>
@@ -312,15 +318,17 @@ GC收集器：CMS</li>
 <p>serial的多线程版本，提高了效率</p>
 <p>Parallel Scavnenge</p>
 <p>类似ParNew，就是关注点在提高吞吐量（高效率利用CPU，尽可能少占用用户代码执行时间）</p>
-<p>CMS</p>
-<p>旨在尽可能减少停顿时间，是并发收集器（几乎与用户线程同时工作，没有STW），采用标记-清除算法。</p>
-<p>初始标记：标记直接与root相连的对象</p>
-<p>并发标记：跟在垃圾回收时，引用发生更新的地方</p>
-<p>重新标记：重新标记用户程序继续运行而导致标记产生变动的那一部分对象的标记记录</p>
-<p>并发清除：开启用户线程，同时GC线程开始清扫</p>
-<p>缺点：对CPU敏感，产生碎片</p>
-<p>G1</p>
-<p>采用标记-整理算法，低停顿时间，高吞吐量。</p>
+<p><strong>CMS</strong></p>
+<p>主要用于<strong>老年代</strong>的回收。旨在尽可能减少停顿时间，是并发收集器（几乎与用户线程同时工作，没有STW），采用标记-清除算法。</p>
+<p>初始标记：标记直接与 gc roots 相连的对象。会造成 stw 但时间很短。</p>
+<p>并发标记：gc 线程 与用户线程并发执行，标记所有可达对象。</p>
+<p>重新标记：处理在并发标记阶段新增的对象或更新的引用关系。也会 stw 同样时间很短。</p>
+<p>并发清除：与用户线程并发执行，清除未被标记的对象。</p>
+<p>优点：并发标记和并发清除几乎不会停止应用程序，停顿时间短
+缺点：造成内存碎片，可能导致老年代无法分配大对象。与用户线程争夺 cpu 资源。</p>
+<p><strong>G1</strong></p>
+<p>采用标记-整理算法，低停顿时间，高吞吐量，<strong>回收时间可控</strong>。</p>
+<p>去掉了新生代老年代的概念，在逻辑上将堆区域划分成 2048 个 region（具体大小根据堆空间而定），可以控制垃圾回收时间，并在规定时间内优先回收优先级最高的 region，避免对整个新生代或老年代进行回收。</p>
 <p>可以让使用者明确在指定M毫秒的时间内，消耗在垃圾收集器上的时间不得超过N毫秒。</p>
 <ul>
 <li>初始标记</li>
@@ -329,6 +337,20 @@ GC收集器：CMS</li>
 <li>筛选回收</li>
 </ul>
 <p>该收集器会在后台维护一个优先列表，每次根据收集时间，选择回收价值最大的Region，效率高。</p>
+<p><strong>三色标记法</strong></p>
+<p>将所有对象分成黑灰白三种。白色未被访问，灰色被访问了但是内部的引用对象还未访问，黑色除了本身其内部所有的引用对象都被访问。
+初始化：遍历所有 gc roots 标记为灰色，放入工作列表中
+标记过程：不断从工作列表取出灰色对象，将其标记成黑色，并将其中的引用对象标记成灰色。递归执行，直到工作列表会空。
+清除阶段：清理所有白色对象，都是不可达的
+优点：
+天然支持增量回收。
+由于标记阶段分阶段进行减少 stw 时间。
+避免重复扫描。
+采用颜色标记的方式能够有效避免扫码同一对象。
+存在的问题：在并发回收过程中如果白色对象引用赋值给黑色对象，可能导致垃圾回收器认为该白色对象为不可达对象。
+解决办法：
+写屏障，确保所有新引用的对象都标记为灰色。
+读屏障，确保读取都对象不会被错误回收</p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">

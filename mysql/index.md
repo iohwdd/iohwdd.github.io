@@ -2,11 +2,11 @@
 
 ***
 
-title = 'Mysql'
-date = 2024-11-19T22:02:00+08:00
-draft = true
+title = 'MySQL'
+date = 2024-11-19T17:18:25+08:00
+draft = false
 
-***
++++
 
 
 
